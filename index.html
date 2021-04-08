@@ -37,7 +37,7 @@
         <button id="break-decrement">
           <i class="fas fa-arrow-circle-down"></i>
         </button>
-        <p>5</p>
+        <output id="break-length">5</output>
         <button id="break-increment">
           <i class="fas fa-arrow-circle-up"></i>
         </button>
@@ -49,24 +49,22 @@
         <button id="session-decrement">
           <i class="fas fa-arrow-circle-down"></i>
         </button>
-        <p>25</p>
+        <output id="session-length">25</output>
         <button id="session-increment">
           <i class="fas fa-arrow-circle-up"></i>
         </button>
       </div>
     </div>
     <div class="display">
-      <h2>Session</h2>
-      <p>25:00</p>
+      <h2 id="timer-label">Session</h2>
+      <output id="time-left">25:00</output>
     </div>
     <div class="control">
-    <button>
+    <button id="start-stop">
       <i class="fas fa-play-circle"></i>
+      <!-- <i class="fas fa-pause-circle"></i> -->
     </button>
-    <button>
-      <i class="fas fa-pause-circle"></i>
-    </button>
-    <button>
+    <button id="reset">
       <i class="fas fa-sync-alt"></i>
     </button>
     </div>
