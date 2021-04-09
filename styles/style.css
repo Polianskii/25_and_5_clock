@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  clear: both;
+}
+
+:root {
+  --main-bg-color: rgb(154, 196, 196);
+  --clock-bg-color: rgb(63, 114, 114);
+  --color-light: antiquewhite;
+}
+
+body {
+  width: 100%;
+  background-color: var(--main-bg-color);
+}
+
+.clock {
+  width: 30%;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  background-color: var(--clock-bg-color);
+  color: var(--color-light);
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+}
+
+.setting {
+  width: 50%;
+}
+
+.display {
+  width: 100%;
+}
+
+.footer {
+  width: 100%;
+}
