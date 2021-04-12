@@ -63,7 +63,10 @@ body {
 }
 
 .setting__control {
-  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0.5vw 0 1vw;
 }
 
 .setting__button,
@@ -82,7 +85,6 @@ body {
   -o-border-radius: 0.5vw;
   cursor: pointer;
   color: var(--color-dark);
-  padding-top: 0.10vw;
   background-color: var(--main-bg-color);
 }
 
@@ -137,6 +139,9 @@ body {
 }
 
 .circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 1.5vw;
   height: 1.5vw;
   background-color: var(--color-dark);
@@ -144,8 +149,6 @@ body {
   font-size: 0.9vw;
   text-align: center;
   border-radius: 50%;
-  padding-top: 0.25vw;
-  margin-bottom: 0.12vw;
 }
 
 .circle:hover {
@@ -161,4 +164,20 @@ body {
 .last-minute {
   color: var(--color-red);
   background-color: var(--red-bg-color);
+}
+
+@media (max-width: 960px) {
+  .clock {
+    width: 40%;
+  }
+}
+
+@media (max-width: 680px) {
+  .clock {
+    width: 50%;
+  }
+
+  .setting {
+    height: 7.5vw;
+  }
 }
