@@ -13,6 +13,8 @@ class SettingControl extends React.Component {
           className="setting__button"
           id={this.props.idDecrement}
           type="button"
+          value="-"
+          onClick={this.props.onClick}
         >
           <i className="setting__icon fas fa-arrow-circle-down"></i>
         </button>
@@ -23,6 +25,8 @@ class SettingControl extends React.Component {
           className="setting__button"
           id={this.props.idIncrement}
           type="button"
+          value="+"
+          onClick={this.props.onClick}
         >
           <i className="setting__icon fas fa-arrow-circle-up"></i>
         </button>
@@ -113,9 +117,35 @@ class Clock extends React.Component {
     this.state = {
       breakLength: 5,
       sessionLength: 25,
-      timerTitle: "Session"
+      timerTitle: "Session",
+      timerState: "stopped"
     };
+
+    this.setLength = this.setLength.bind(this);
+    this.setBreakLength = this.setBreakLength.bind(this);
+    this.setSessionLength = this.setSessionLength.bind(this);
   }
+
+  setBreakLength(event) {
+    this.setLength(
+      "breakLength",
+      event.currentTarget.value,
+      this.state.breakLength
+    );
+  }
+
+  setSessionLength(event) {
+    this.setLength(
+      "sessionLength",
+      event.currentTarget.value,
+      this.state.sessionLength
+    );
+  }
+
+  setLength(property, sign, currentLength) {
+    if (this.state.timerState === "running") return;
+  }
+
   render() {
     return (
       <div className="clock">
@@ -126,6 +156,7 @@ class Clock extends React.Component {
           idDecrement = "break-decrement"
           idIncrement = "break-increment"
           idLabel = "break-label"
+          onClick = {this.setBreakLength}
         />
         <Setting
           title = "Session Length"
@@ -133,6 +164,7 @@ class Clock extends React.Component {
           idDecrement = "session-decrement"
           idIncrement = "session-increment"
           idLabel = "session-label"
+          onClick = {this.setSessionLength}
         />
         <Display
           title = {this.state.timerTitle}
