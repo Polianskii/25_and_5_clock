@@ -46,7 +46,10 @@ class Setting extends React.Component {
         <h2  className="setting__label" id="break-label">
           {this.props.title}
         </h2>
-        <SettingControl length = {this.props.length}/>
+        <SettingControl
+          length = {this.props.length}
+          onClick = {this.props.onClick}
+        />
       </div>
     );
   }
@@ -87,6 +90,7 @@ class Control extends React.Component {
           className="control__button"
           id="reset"
           type="button"
+          onClick={this.props.reset}
         >
           <div className="circle">
             <i className="control__icon fas fa-sync-alt"></i>
@@ -124,6 +128,7 @@ class Clock extends React.Component {
     this.setLength = this.setLength.bind(this);
     this.setBreakLength = this.setBreakLength.bind(this);
     this.setSessionLength = this.setSessionLength.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   setBreakLength(event) {
@@ -144,6 +149,24 @@ class Clock extends React.Component {
 
   setLength(property, sign, currentLength) {
     if (this.state.timerState === "running") return;
+    if (sign === "-" && currentLength > 1) {
+      this.setState({
+        [property]: currentLength - 1
+      });
+    } else if (sign === "+" && currentLength < 60) {
+      this.setState({
+        [property]: currentLength + 1
+      })
+    }
+  }
+
+  reset() {
+    this.setState({
+      breakLength: 5,
+      sessionLength: 25,
+      timerTitle: "Session",
+      timerState: "stopped"
+    });
   }
 
   render() {
@@ -169,7 +192,9 @@ class Clock extends React.Component {
         <Display
           title = {this.state.timerTitle}
         />
-        <Control />
+        <Control
+          reset = {this.reset}
+        />
         <Footer />
       </div>
     );
