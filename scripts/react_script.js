@@ -64,7 +64,7 @@ const Display = (props) => {
         {props.title}
       </h2>
       <output className="display__timer" id="time-left">
-        25:00
+        {props.timer()}
       </output>
     </div>
   );
@@ -129,6 +129,7 @@ class Clock extends React.Component {
     this.setBreakLength = this.setBreakLength.bind(this);
     this.setSessionLength = this.setSessionLength.bind(this);
     this.reset = this.reset.bind(this);
+    this.clockFace = this.clockFace.bind(this);
   }
 
   setBreakLength(event) {
@@ -169,6 +170,10 @@ class Clock extends React.Component {
     });
   }
 
+  clockFace(minutes = 25, secundes = 0) {
+    return `${minutes}:${secundes < 10 ? "0" + secundes : secundes}`;
+  }
+
   render() {
     return (
       <div className="clock">
@@ -191,6 +196,7 @@ class Clock extends React.Component {
         />
         <Display
           title = {this.state.timerTitle}
+          timer = {this.clockFace}
         />
         <Control
           reset = {this.reset}
