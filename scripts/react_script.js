@@ -83,8 +83,11 @@ class Control extends React.Component {
           className="control__button"
           id="start-stop"
           type="button"
+          onClick={this.props.timerControl}
         >
-          <i className="control__icon fas fa-play-circle"></i>
+          {this.props.timerState === "stopped" ?
+            <i className="control__icon fas fa-play-circle"></i> :
+            <i class="control__icon fas fa-pause-circle"></i>}
         </button>
         <button
           className="control__button"
@@ -244,6 +247,8 @@ class Clock extends React.Component {
         />
         <Control
           reset = {this.reset}
+          timerControl = {this.timerControl}
+          timerState = {this.state.timerState}
         />
         <Footer />
       </div>
