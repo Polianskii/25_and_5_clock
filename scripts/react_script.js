@@ -119,8 +119,8 @@ class Clock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      breakLength: 5,
-      sessionLength: 25,
+      breakLength: 300,
+      sessionLength: 1500,
       timerTitle: "Session",
       timerState: "stopped"
     };
@@ -130,6 +130,9 @@ class Clock extends React.Component {
     this.setSessionLength = this.setSessionLength.bind(this);
     this.reset = this.reset.bind(this);
     this.clockFace = this.clockFace.bind(this);
+    this.switchTimerType = this.switchTimerType.bind(this);
+    this.decrementTimer = this.decrementTimer.bind(this);
+    this.timerControl = this.timerControl.bind(this);
   }
 
   setBreakLength(event) {
@@ -150,21 +153,39 @@ class Clock extends React.Component {
 
   setLength(property, sign, currentLength) {
     if (this.state.timerState === "running") return;
-    if (sign === "-" && currentLength > 1) {
+    if (sign === "-" && currentLength / 60 > 1) {
       this.setState({
-        [property]: currentLength - 1
+        [property]: currentLength - 60
       });
-    } else if (sign === "+" && currentLength < 60) {
+    } else if (sign === "+" && currentLength / 60 < 60) {
       this.setState({
-        [property]: currentLength + 1
+        [property]: currentLength + 60
       })
     }
   }
 
+  switchTimerType() {
+    this.setState({
+      timerTitle: this.state.timerTitle === "Session" ? "Break" : "Session"
+    });
+  }
+
+  decrementTimer(property) {
+    this.setState({
+      [property]: this.state[property] - 1
+    });
+  }
+
+  timerControl() {
+    this.setState({
+      timerState: this.state.timerState === "stopped" ? "running" : "stopped"
+    });
+  }
+
   reset() {
     this.setState({
-      breakLength: 5,
-      sessionLength: 25,
+      breakLength: 300,
+      sessionLength: 1500,
       timerTitle: "Session",
       timerState: "stopped"
     });
@@ -180,7 +201,7 @@ class Clock extends React.Component {
         <h1 className="header">25 + 5 clock</h1>
         <Setting 
           title = "Break Length"
-          length = {this.state.breakLength}
+          length = {this.state.breakLength / 60}
           idDecrement = "break-decrement"
           idIncrement = "break-increment"
           idLabel = "break-label"
@@ -188,7 +209,7 @@ class Clock extends React.Component {
         />
         <Setting
           title = "Session Length"
-          length = {this.state.sessionLength}
+          length = {this.state.sessionLength / 60}
           idDecrement = "session-decrement"
           idIncrement = "session-increment"
           idLabel = "session-label"
