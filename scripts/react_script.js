@@ -122,7 +122,8 @@ class Clock extends React.Component {
       breakLength: 300,
       sessionLength: 1500,
       timerTitle: "Session",
-      timerState: "stopped"
+      timerState: "stopped",
+      timerID: ""
     };
 
     this.setLength = this.setLength.bind(this);
@@ -133,6 +134,8 @@ class Clock extends React.Component {
     this.switchTimerType = this.switchTimerType.bind(this);
     this.decrementTimer = this.decrementTimer.bind(this);
     this.timerControl = this.timerControl.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    this.getLength = this.getLength.bind(this);
   }
 
   setBreakLength(event) {
@@ -170,10 +173,16 @@ class Clock extends React.Component {
     });
   }
 
-  decrementTimer(property) {
-    this.setState({
-      [property]: this.state[property] - 1
-    });
+  decrementTimer() {
+    if (this.state.timerTitle === "Session") {
+      this.setState({
+        sessionLength: this.setState.sessionLength - 1
+      });
+    } else {
+      this.setState({
+        breakLength: this.setState.breakLength - 1
+      });
+    }
   }
 
   timerControl() {
@@ -182,17 +191,31 @@ class Clock extends React.Component {
     });
   }
 
+  startTimer() {
+    this.setState({
+      timerID: setTimeout(this.decrementTimer(), 1000)
+    });
+  }
+
   reset() {
     this.setState({
       breakLength: 300,
       sessionLength: 1500,
       timerTitle: "Session",
-      timerState: "stopped"
+      timerState: "stopped",
+      timerID: ""
     });
   }
 
-  clockFace(minutes = 25, secundes = 0) {
+  clockFace() {
+    let minutes = Math.floor(this.getLength() / 60);
+    let secundes = this.getLength() - minutes * 60;
     return `${minutes}:${secundes < 10 ? "0" + secundes : secundes}`;
+  }
+
+  getLength() {
+    return this.state.timerTitle === "Session"
+      ? this.state.sessionLength : this.state.breakLength;
   }
 
   render() {
