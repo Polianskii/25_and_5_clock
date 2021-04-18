@@ -200,7 +200,7 @@ class Clock extends React.Component {
 
   startTimer() {
     this.setState({
-      timerID: setTimeout(this.decrementTimer(), 1000)
+      timerID: setInterval(() => {this.decrementTimer()}, 1000)
     });
   }
 
@@ -251,6 +251,11 @@ class Clock extends React.Component {
           timerState = {this.state.timerState}
         />
         <Footer />
+        <audio
+          id = "beep"
+          preload = "auto"
+          src = "https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        />
       </div>
     );
   }
