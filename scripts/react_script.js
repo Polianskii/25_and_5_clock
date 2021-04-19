@@ -169,9 +169,10 @@ class Clock extends React.Component {
     }
   }
 
-  switchTimerType = () => {
+  switchTimer = (num, str) => {
     this.setState({
-      timerTitle: this.state.timerTitle === "Session" ? "Break" : "Session"
+      timerTitle: str,
+      timer: num
     });
   }
 
@@ -182,16 +183,32 @@ class Clock extends React.Component {
   }
 
   timerControl = () => {
-    this.setState({
-      timerState: this.state.timerState === "stopped" ? "running" : "stopped"
-    });
+    this.setState((state) => ({
+      timerState: state.timerState === "stopped" ? "running" : "stopped"
+    }));
     this.timer();
   }
 
   startTimer = () => {
     this.setState({
-      timerID: setInterval(() => {this.decrementTimer()}, 1000)
+      timerID: setInterval(() => {
+        this.decrementTimer();
+        this.typeControl();
+      }, 1000)
     });
+  }
+
+  typeControl = () => {
+    if (this.state.timer < 0) {
+      clearInterval(this.state.timerID);
+      if (this.state.timerTitle === "Session") {
+        this.startTimer();
+        this.switchTimer(this.state.breakLength * 60, "Break");
+      } else {
+        this.startTimer();
+        this.switchTimer(this.state.sessionLength * 60, "Session");
+      }
+    }
   }
 
   timer = () => {
