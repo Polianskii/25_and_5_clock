@@ -129,19 +129,9 @@ class Clock extends React.Component {
       timer: 1500,
       timerID: ""
     };
-
-    this.setLength = this.setLength.bind(this);
-    this.setBreakLength = this.setBreakLength.bind(this);
-    this.setSessionLength = this.setSessionLength.bind(this);
-    this.reset = this.reset.bind(this);
-    this.clockFace = this.clockFace.bind(this);
-    this.switchTimerType = this.switchTimerType.bind(this);
-    this.decrementTimer = this.decrementTimer.bind(this);
-    this.timerControl = this.timerControl.bind(this);
-    this.startTimer = this.startTimer.bind(this);
   }
 
-  setBreakLength(event) {
+  setBreakLength = (event) => {
     this.setLength(
       "breakLength",
       event.currentTarget.value,
@@ -149,7 +139,7 @@ class Clock extends React.Component {
     );
   }
 
-  setSessionLength(event) {
+  setSessionLength = (event) => {
     this.setLength(
       "sessionLength",
       event.currentTarget.value,
@@ -157,7 +147,7 @@ class Clock extends React.Component {
     );
   }
 
-  setLength(property, sign, currentLength) {
+  setLength = (property, sign, currentLength) => {
     if (this.state.timerState === "running") return;
     if (sign === "-" && currentLength > 1) {
       this.setState({
@@ -179,32 +169,40 @@ class Clock extends React.Component {
     }
   }
 
-  switchTimerType() {
+  switchTimerType = () => {
     this.setState({
       timerTitle: this.state.timerTitle === "Session" ? "Break" : "Session"
     });
   }
 
-  decrementTimer() {
+  decrementTimer = () => {
     this.setState({
       timer: this.state.timer - 1
     });
   }
 
-  timerControl() {
+  timerControl = () => {
     this.setState({
       timerState: this.state.timerState === "stopped" ? "running" : "stopped"
     });
-    this.startTimer();
+    this.timer();
   }
 
-  startTimer() {
+  startTimer = () => {
     this.setState({
       timerID: setInterval(() => {this.decrementTimer()}, 1000)
     });
   }
 
-  reset() {
+  timer = () => {
+    if (this.state.timerState === "stopped") {
+      this.startTimer();
+    } else {
+      clearInterval(this.state.timerID);
+    }
+  }
+
+  reset = () => {
     this.setState({
       breakLength: 5,
       sessionLength: 25,
@@ -215,7 +213,7 @@ class Clock extends React.Component {
     });
   }
 
-  clockFace() {
+  clockFace = () => {
     let minutes = Math.floor(this.state.timer / 60);
     let secundes = this.state.timer - minutes * 60;
     return `${minutes}:${secundes < 10 ? "0" + secundes : secundes}`;
