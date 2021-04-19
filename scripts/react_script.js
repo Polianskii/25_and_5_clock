@@ -59,12 +59,12 @@ class Setting extends React.Component {
 
 const Display = (props) => {
   return (
-    <div className="display">
+    <div className={props.timer > 59 ? "display" : "display last-minute"}>
       <h2 className="display__title" id="timer-label">
         {props.title}
       </h2>
       <output className="display__timer" id="time-left">
-        {props.timer()}
+        {props.clockFace()}
       </output>
     </div>
   );
@@ -110,7 +110,7 @@ const Footer = () => {
   return (
     <div className="footer">
       <p className="footer__text">
-        Designed and Coded by Pavle Polianskii
+        Designed and Coded by Pavel Polianskii
       </p>
     </div>
   );
@@ -135,7 +135,8 @@ class Clock extends React.Component {
     this.setLength(
       "breakLength",
       event.currentTarget.value,
-      this.state.breakLength
+      this.state.breakLength,
+      "Session"
     );
   }
 
@@ -143,11 +144,12 @@ class Clock extends React.Component {
     this.setLength(
       "sessionLength",
       event.currentTarget.value,
-      this.state.sessionLength
+      this.state.sessionLength,
+      "Break"
     );
   }
 
-  setLength = (property, sign, currentLength) => {
+  setLength = (property, sign, currentLength, type) => {
     if (this.state.timerState === "running") return;
     if (sign === "-" && currentLength > 1) {
       this.setState({
@@ -158,13 +160,9 @@ class Clock extends React.Component {
         [property]: currentLength + 1
       })
     }
-    if (this.state.timerTitle === "Session") {
+    if (this.state.timerTitle !== type) {
       this.setState((state) => ({
-        timer: state.sessionLength * 60
-      }));
-    } else {
-      this.setState((state) => ({
-        timer: state.breakLength * 60
+        timer: state[property] * 60
       }));
     }
   }
@@ -199,6 +197,7 @@ class Clock extends React.Component {
   }
 
   typeControl = () => {
+    this.beeper(this.state.timer);
     if (this.state.timer < 0) {
       clearInterval(this.state.timerID);
       if (this.state.timerTitle === "Session") {
@@ -219,6 +218,12 @@ class Clock extends React.Component {
     }
   }
 
+  beeper = (timer) => {
+    if (timer === 0) {
+      this.audioBeep.play();
+    }
+  }
+
   reset = () => {
     this.setState({
       breakLength: 5,
@@ -228,12 +233,15 @@ class Clock extends React.Component {
       timer: 1500,
       timerID: ""
     });
+    if (this.state.timerID) clearInterval(this.state.timerID);
+    this.audioBeep.pause();
+    this.audioBeep.currentTime = 0;
   }
 
   clockFace = () => {
     let minutes = Math.floor(this.state.timer / 60);
     let secundes = this.state.timer - minutes * 60;
-    return `${minutes}:${secundes < 10 ? "0" + secundes : secundes}`;
+    return `${minutes < 10 ? "0" + minutes : minutes}:${secundes < 10 ? "0" + secundes : secundes}`;
   }
 
   render() {
@@ -258,7 +266,8 @@ class Clock extends React.Component {
         />
         <Display
           title = {this.state.timerTitle}
-          timer = {this.clockFace}
+          clockFace = {this.clockFace}
+          timer = {this.state.timer}
         />
         <Control
           reset = {this.reset}
@@ -269,6 +278,9 @@ class Clock extends React.Component {
         <audio
           id = "beep"
           preload = "auto"
+          ref={(audio) => {
+            this.audioBeep = audio;
+          }}
           src = "https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
         />
       </div>
