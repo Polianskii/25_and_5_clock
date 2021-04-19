@@ -2,57 +2,49 @@
 
 // Setting ====================================================================
 
-class SettingControl extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="setting__control">
-        <button
-          className="setting__button"
-          id={this.props.idDecrement}
-          type="button"
-          value="-"
-          onClick={this.props.onClick}
-        >
-          <i className="setting__icon fas fa-arrow-circle-down"></i>
-        </button>
-        <output className="setting__display" id={this.props.idLabel}>
-          {this.props.length}
-        </output>
-        <button
-          className="setting__button"
-          id={this.props.idIncrement}
-          type="button"
-          value="+"
-          onClick={this.props.onClick}
-        >
-          <i className="setting__icon fas fa-arrow-circle-up"></i>
-        </button>
-      </div>
-    );
-  }
+const SettingControl = props => {
+  return (
+    <div className="setting__control">
+      <button
+        className="setting__button"
+        id={props.idDecrement}
+        type="button"
+        value="-"
+        onClick={props.onClick}
+      >
+        <i className="setting__icon fas fa-arrow-circle-down"></i>
+      </button>
+      <output className="setting__display" id={props.idLength}>
+        {props.length}
+      </output>
+      <button
+        className="setting__button"
+        id={props.idIncrement}
+        type="button"
+        value="+"
+        onClick={props.onClick}
+      >
+        <i className="setting__icon fas fa-arrow-circle-up"></i>
+      </button>
+    </div>
+  );
 }
 
-class Setting extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="setting">
-        <h2  className="setting__label" id="break-label">
-          {this.props.title}
-        </h2>
-        <SettingControl
-          length = {this.props.length}
-          onClick = {this.props.onClick}
-        />
-      </div>
-    );
-  }
+const Setting = props => {
+  return (
+    <div className="setting">
+      <h2  className="setting__label" id={props.idLabel}>
+        {props.title}
+      </h2>
+      <SettingControl
+        length = {props.length}
+        idDecrement = {props.idDecrement}
+        idIncrement = {props.idIncrement}
+        idLength = {props.idLength}
+        onClick = {props.onClick}
+      />
+    </div>
+  );
 }
 
 // Display ====================================================================
@@ -72,36 +64,31 @@ const Display = (props) => {
 
 // Control ====================================================================
 
-class Control extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="control">
-        <button
-          className="control__button"
-          id="start-stop"
-          type="button"
-          onClick={this.props.timerControl}
-        >
-          {this.props.timerState === "stopped" ?
-            <i className="control__icon fas fa-play-circle"></i> :
-            <i className="control__icon fas fa-pause-circle"></i>}
-        </button>
-        <button
-          className="control__button"
-          id="reset"
-          type="button"
-          onClick={this.props.reset}
-        >
-          <div className="circle">
-            <i className="control__icon fas fa-sync-alt"></i>
-          </div>
-        </button>
-      </div>
-    );
-  }
+const Control = props => {
+  return (
+    <div className="control">
+      <button
+        className="control__button"
+        id="start_stop"
+        type="button"
+        onClick={props.timerControl}
+      >
+        {props.timerState === "stopped" ?
+          <i className="control__icon fas fa-play-circle"></i> :
+          <i className="control__icon fas fa-pause-circle"></i>}
+      </button>
+      <button
+        className="control__button"
+        id="reset"
+        type="button"
+        onClick={props.reset}
+      >
+        <div className="circle">
+          <i className="control__icon fas fa-sync-alt"></i>
+        </div>
+      </button>
+    </div>
+  );
 }
 
 // Footer =====================================================================
@@ -254,6 +241,7 @@ class Clock extends React.Component {
           idDecrement = "break-decrement"
           idIncrement = "break-increment"
           idLabel = "break-label"
+          idLength = "break-length"
           onClick = {this.setBreakLength}
         />
         <Setting
@@ -262,6 +250,7 @@ class Clock extends React.Component {
           idDecrement = "session-decrement"
           idIncrement = "session-increment"
           idLabel = "session-label"
+          idLength = "session-length"
           onClick = {this.setSessionLength}
         />
         <Display
